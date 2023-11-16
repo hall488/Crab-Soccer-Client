@@ -19,11 +19,14 @@ class Example extends Phaser.Scene {
 
     this.ball = this.matter.add.image(200, 200, "ball").setCircle(121 / 2);
     this.crab.setScale(0.5);
-    this.ball.setBounce(1);
+    this.crab.setFixedRotation(0);
+    this.ball.body.restitution = 1;
+    this.ball.setFrictionAir(0);
+    this.ball.setBounce(.8);
     // crab.setVelocity(100, 200);
-    this.crab.setBounce(1);
+    // this.crab.setBounce(1);
     // this.crab.setImmovable(true);
-    this.velocity = 3;
+    this.velocity = 8;
     //this.ball.setMaxVelocity(500, 500);
     //this.ball.setVelocityX(100);
 
@@ -32,6 +35,7 @@ class Example extends Phaser.Scene {
     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     // this.physics.world.setFPS(120);
+
   }
 
   update() {
@@ -49,6 +53,9 @@ class Example extends Phaser.Scene {
       newVel.x += this.velocity;
     }
     this.crab.setVelocity(newVel.x, newVel.y);
+    if(this.matter.collision.collides(this.crab.body, this.ball.body)) {
+      this.matter.body.setSpeed(this.ball.body, this.ball.body.speed *1.2);
+    }
   }
 }
 
