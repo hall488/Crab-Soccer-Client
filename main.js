@@ -219,6 +219,12 @@ function preload() {
 function create() {
   var self = this;
   this.socket = io("http://localhost:4000");
+
+  this.scoreText = this.add.text(330, -100, `Red 0 : 0 Blue `, {
+    fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+    fontSize: 100,
+  });
+
   this.players = this.add.group();
 
   this.background = this.add.layer();
@@ -245,7 +251,11 @@ function create() {
   });
 
   this.socket.on("newPlayer", function (playerInfo) {
-    displayPlayers(self, playerInfo, "crab");
+    if (playerInfo.team == "red") {
+      displayPlayers(self, playerInfo, "crab");
+    } else {
+      displayPlayers(self, playerInfo, "bad_crab");
+    }
   });
 
   this.socket.on("removePlayer", function (playerId) {
@@ -256,7 +266,7 @@ function create() {
     });
   });
 
-  this.socket.on("gameUpdates", function ({ players, ball }) {
+  this.socket.on("gameUpdates", function ({ players, ball, score }) {
     Object.keys(players).forEach(function (id) {
       self.players.getChildren().forEach(function (player) {
         if (players[id].playerId === player.playerId) {
@@ -266,6 +276,7 @@ function create() {
     });
     self.ball.setPosition(ball.x, ball.y);
     self.ball.setRotation(ball.rotation);
+    self.scoreText.text = `Red ${score.red} : ${score.blue} Blue`;
   });
 
   this.goal1_texture = this.add.image(-50, 455, "goal");
