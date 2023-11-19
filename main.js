@@ -220,7 +220,7 @@ function create() {
   var self = this;
   this.socket = io("http://localhost:4000");
 
-  this.scoreText = this.add.text(330, -100, `Red 0 : 0 Blue `, {
+  this.scoreText = this.add.text(310, -130, `Red 0 : 0 Blue `, {
     fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
     fontSize: 100,
   });
